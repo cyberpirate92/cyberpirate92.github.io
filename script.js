@@ -83,6 +83,7 @@ window.addEventListener('click', (event) => {
 
 window.addEventListener('load', () => {
     container = document.querySelector("#container");
+    refreshApiRateCount();
     createLine(container); 
 });
 
@@ -114,9 +115,6 @@ function cmdProjects(args) {
                     error("API request failed, please try after some time");
                     console.log('API Responded with null');
                 }
-                let remainingRequests = ajaxRequest.getResponseHeader("X-RateLimit-Remaining");
-                let remainingRequestsSpan = document.querySelector("#remainingRequests");
-                remainingRequestsSpan.textContent = remainingRequests;
             }
             else {
                 stopLoading();
@@ -128,6 +126,7 @@ function cmdProjects(args) {
                 }
                 createLine(container);
             }
+            updateApiRateInfo(ajaxRequest);
         });
         ajaxRequest.addEventListener("error", (event) => {
             error("API request failed, please try after some time");
@@ -150,7 +149,6 @@ function cmdHistory(args) {
 }
 
 function cmdAbout(args) {
-    // TODO: Implementation
     addTextLines(`I'm Ravi Theja, Software Engineer from India.\n
     This webapp is a fun dev portifolio, still a work in progress and I plan to add a few fun games in the future :)\n
     You can get in touch with me at bsravi.tez@gmail.com`, infoColor);
@@ -379,4 +377,21 @@ function getNewCommandLine() {
     });
 
     return preDiv;
+}
+
+function updateApiRateInfo(request) {
+    console.log(request.getAllResponseHeaders());
+    let resetDate = (new Date(request.getResponseHeader("X-RateLimit-Reset") * 1000) || new Date());
+    document.querySelector("#remainingRequests").textContent = request.getResponseHeader("X-RateLimit-Remaining") || 60;
+    document.querySelector("#resetTime").textContent = `${resetDate.getHours()}:${resetDate.getMinutes()}`;
+}
+
+function refreshApiRateCount() {
+    const url = "https://api.github.com/rate_limit";
+    let request = new XMLHttpRequest();
+    request.addEventListener("load", () => {
+        updateApiRateInfo(request);
+    });
+    request.open("GET", url);
+    request.send();
 }

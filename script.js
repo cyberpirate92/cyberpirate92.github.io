@@ -352,7 +352,7 @@ function getNewCommandLine() {
             commandInput.id = "";
 
             let command = commandInput.textContent;
-            processCommand(command);
+            processCommand(command.toLowerCase());
             
             createLineIfNotExists(container);
             return;

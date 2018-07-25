@@ -54,7 +54,7 @@ var commands = [
     },
     {
         command: "projects",
-        description: "View my projects (excluding forks)",
+        description: "View my projects (excluding forks and archived projects)",
         action: cmdProjects
     },
     {
@@ -187,8 +187,8 @@ function stopLoading() {
 
 function showRepos(repoList) {
     stopLoading();
-    let nonForkedRepos = repoList.filter(r => r.fork === false);
-    createTable(nonForkedRepos, ['name', 'description'], 'html_url');
+    let activeRepos = repoList.filter(r => r.fork === false && r.archived === false);
+    createTable(activeRepos, ['name', 'description'], 'html_url');
     let currentLine = getCurrentLine();
     if (!currentLine) {
         createLine(container);
@@ -263,6 +263,7 @@ function createLineIfNotExists(root) {
 }
 
 function processCommand(commandText) {
+    commandText = commandText.trim();
     if (!commandText) return;
     let tokens = commandText.split(" ");
     if (tokens.length > 0) {
@@ -358,14 +359,14 @@ function getNewCommandLine() {
             return;
         }
         else if (keyEvent.keyCode === 38) { // UP Arrow
+            setCurrentLineText(commandHistory[historyIndex]); 
             if (historyIndex > 0) {
-                setCurrentLineText(commandHistory[historyIndex]); 
                 historyIndex -= 1;
             }
         }
         else if (keyEvent.keyCode === 40) { // DOWN arrow
+            setCurrentLineText(commandHistory[historyIndex]);
             if (historyIndex < commandHistory.length-1) {
-                setCurrentLineText(commandHistory[historyIndex]);
                 historyIndex += 1;
             }
         }

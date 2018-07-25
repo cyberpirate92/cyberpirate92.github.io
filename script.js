@@ -186,7 +186,7 @@ function stopLoading() {
 function showRepos(repoList) {
     stopLoading();
     let activeRepos = repoList.filter(r => r.fork === false && r.archived === false);
-    createTable(activeRepos, ['name', 'description'], 'html_url');
+    createTable(activeRepos, ['name', 'language', 'description'], 'html_url');
     let currentLine = getCurrentLine();
     if (!currentLine) {
         createLine(container);

@@ -1,9 +1,10 @@
 body {
     background-color: #000;
-    font-family: 'Courier New', Courier, monospace,monospace;
+    font-family: 'Lucida Console', 'Monaco', monospace;
+    font-size: .9rem;
 }
 #wrapper {
-    color: white;
+    color: lightgray;
     display: flex;
     flex-direction: column;
 }
@@ -37,10 +38,11 @@ div:focus {
 table.centeredTable {
     margin-top: 10px;
     margin-bottom: 10px;
-    border: 2px solid yellowgreen;
+    border: 2px solid lightgray;
     border-top: none;
     border-spacing: 0;
     border-collapse: collapse;
+    width: 100%;
 }
 table.centeredTable > thead > tr > th {
     text-align: left;
@@ -61,7 +63,7 @@ table.centeredTable > tbody > tr.clickable {
     cursor: pointer;
 }
 table.centeredTable > tbody > tr.clickable:hover {
-    background-color: rgba(154, 205, 50, 0.3);
+    background-color: #333;
 }
 a {
     color: inherit;
@@ -71,7 +73,7 @@ span.info {
     color: yellow;
 }
 .welcomeText {
-    color: orange;
+    color: lightgray;
 }
 .mb-10 {
     margin-bottom: 10px;
@@ -79,5 +81,5 @@ span.info {
 .fixedHeader {
     padding: 10px;
     background: #000;
-    color: orange;
+    color: lightgray;
 }

@@ -1,7 +1,7 @@
 // color constants
 const errorColor = "red";
-const infoColor = "yellow";
-const defaultColor = "greenyellow";
+const infoColor = "lightgray";
+const defaultColor = "white";
 const tableHeaderColor = "orange";
 const pureBlack = '#000';
 
@@ -64,21 +64,21 @@ var commands = [
     },
     {
         command: "about",
-        description: "About me",
+        description: "About this project",
         action: cmdAbout
     },
     {
         command: "social",
         description: "Show social media profiles",
         action: cmdSocial
-    }
+    },
 ];
 
 // global event listeners
 window.addEventListener('click', (event) => {
     let current = getCurrentLine();
     if (current)
-        current.focus();
+    current.focus();
 });
 
 window.addEventListener('load', () => {
@@ -86,7 +86,6 @@ window.addEventListener('load', () => {
     refreshApiRateCount();
     createLine(container); 
 });
-
 
 // command handlers
 function cmdHelp(args) {
@@ -149,9 +148,8 @@ function cmdHistory(args) {
 }
 
 function cmdAbout(args) {
-    addTextLines(`I'm Ravi Theja, Software Engineer from India.\n
-    This webapp is a fun dev portifolio, still a work in progress and I plan to add a few fun games in the future :)\n
-    You can get in touch with me at bsravi.tez@gmail.com`, infoColor);
+    addTextLines(`This webapp is my attempt at a different kind of developer portfolio.\n
+    The project details are obtained from Github public API and is developed in vanilla Javascript.\n`, infoColor);
 }
 
 function cmdSocial(args) {
@@ -165,7 +163,7 @@ function showLoading() {
     isLoading = true;
     currentLine = getCurrentLine();
     timerHandle = window.setInterval(() => {
-        setCurrentLineText(`Loading...${loadingStates[(loadState++)%loadingStates.length]}`);
+        setCurrentLineText(`Loading... ${loadingStates[(loadState++)%loadingStates.length]}`);
     }, 100);
 }
 
@@ -179,17 +177,61 @@ function stopLoading() {
             currentLine.parentElement.remove();
         }
     }
-
+    
     isLoading = !isLoading;
 }
 
 function showRepos(repoList) {
+    repoList.sort((repoA, repoB) => {
+        let a =  (repoA && repoA.language && repoA.language.toLowerCase()) || "";
+        let b = (repoB && repoB.language && repoB.language.toLowerCase()) || "";
+        if (a > b) return 1;
+        if (a < b) return -1;
+        return 0;
+    });
     stopLoading();
     let activeRepos = repoList.filter(r => r.fork === false && r.archived === false);
+    createTitle("List of all projects, click to open")
     createTable(activeRepos, ['name', 'language', 'description'], 'html_url');
+    createLanguageTable(activeRepos)
     let currentLine = getCurrentLine();
     if (!currentLine) {
         createLine(container);
+    }
+}
+
+function createTitle(text) {
+    let title = document.createElement('div');
+    title.textContent = text;
+    container.appendChild(title)
+}
+
+// aggregate languages used in projects and show it as a table
+function createLanguageTable(objArray) {
+    if (!objArray) return
+    
+    let languages = {}
+    let totalProjects = 0;
+    objArray.forEach(item => {
+        if (item.language && item.language.length > 0) {
+            let existing = languages[item.language] || 0;
+            languages[item.language] = existing + 1;
+            totalProjects += 1;
+        }
+    });
+    if (Object.keys(languages).length > 0) {
+        let language_map = [];
+        Object.keys(languages).forEach(key => {
+            let language_percentage = parseFloat(((languages[key] / totalProjects) * 100.0).toFixed(2));
+            language_map.push({
+                language: key,
+                projects: languages[key],
+                percentage: getTextProgressBar(language_percentage),
+            })
+        });
+        language_map.sort((a, b) => a.projects - b.projects);
+        createTitle(`Language wise project stats (Total: ${totalProjects})`)
+        createTable(language_map, ['language', 'projects', 'percentage']);
     }
 }
 
@@ -213,7 +255,7 @@ function createTable(objArray, columns, linkProperty) {
         }
         tableBody.appendChild(row);
     });
-
+    
     table.appendChild(tableHead);
     table.appendChild(tableBody);
     table.className = "centeredTable";
@@ -225,16 +267,19 @@ function getTableRow(data, isHeading, optionalTextColor, optionalBackgroundColor
     let websiteUrlRegex = new RegExp(urlRegex);
     for (let i=0; i<data.length; i++) {
         let col = document.createElement(isHeading ? "th" : "td");
-        if (data[i] && data[i].match(websiteUrlRegex)) {
+        let isNumericValue = typeof data[i] === 'number';
+        if (data[i] && typeof data[i] === 'string' && data[i].match(websiteUrlRegex)) {
             col.appendChild(getLink(data[i], data[i]));
         }
         else {
             col.textContent = data[i];
         }
         if (optionalTextColor)
-            col.style.color = optionalTextColor;
+        col.style.color = optionalTextColor;
         if (optionalBackgroundColor)
-            col.style.backgroundColor = optionalBackgroundColor;
+        col.style.backgroundColor = optionalBackgroundColor;
+        // if (isNumericValue)
+        //     col.style.textAlign = 'center'
         row.appendChild(col);
     }
     return row;
@@ -296,7 +341,7 @@ function addTextLine(text, optionalTextColor) {
     let textNode = document.createElement("div");
     textNode.textContent = text;
     if (optionalTextColor)
-        textNode.style.color = optionalTextColor;
+    textNode.style.color = optionalTextColor;
     container.appendChild(textNode);
 }
 
@@ -329,27 +374,26 @@ function setCaret(element, position) {
 }
 
 function getNewCommandLine() {
-
     let preDiv = document.createElement("div");
     let span = document.createElement("span");
     let commandInput = document.createElement("div");
-
-    span.textContent = "$>";
+    
+    span.textContent = "$>"
     span.className = "shellPrefix";
     commandInput.contentEditable = true;
     commandInput.className = "commandLineInput";
     commandInput.id = "currentLine";
     preDiv.className = "commandLine";
-
+    
     preDiv.appendChild(span);
     preDiv.appendChild(commandInput);
-
+    
     commandInput.addEventListener("keydown", function commandKeyDownListener(keyEvent) {
         if (keyEvent.keyCode === 13) {
             commandInput.contentEditable = false;
             commandInput.removeEventListener("keyDown", commandKeyDownListener);
             commandInput.id = "";
-
+            
             let command = commandInput.textContent;
             processCommand(command.toLowerCase());
             
@@ -357,13 +401,13 @@ function getNewCommandLine() {
             return;
         }
         else if (keyEvent.keyCode === 38) { // UP Arrow
-            setCurrentLineText(commandHistory[historyIndex]); 
+            setCurrentLineText(commandHistory[historyIndex] || "projects"); 
             if (historyIndex > 0) {
                 historyIndex -= 1;
             }
         }
         else if (keyEvent.keyCode === 40) { // DOWN arrow
-            setCurrentLineText(commandHistory[historyIndex]);
+            setCurrentLineText(commandHistory[historyIndex] || "projects");
             if (historyIndex < commandHistory.length-1) {
                 historyIndex += 1;
             }
@@ -375,7 +419,7 @@ function getNewCommandLine() {
         keyEvent.preventDefault();
         keyEvent.stopPropagation();
     });
-
+    
     return preDiv;
 }
 
@@ -394,4 +438,15 @@ function refreshApiRateCount() {
     });
     request.open("GET", url);
     request.send();
+}
+
+function getTextProgressBar(value) {
+    value = value || 0;
+    let emptyBar = " ";
+    let filledBar = "█";
+    let progressBar = "";
+    for (let i=1; i<=100; i++) {
+        progressBar += value >= i ? filledBar : emptyBar;
+    }
+    return `${progressBar} ${value}% `;
 }

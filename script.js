@@ -1,5 +1,5 @@
 // color constants
-const errorColor = "red";
+const errorColor = "rgba(100%, 0%, 20%)";
 const infoColor = "lightgray";
 const defaultColor = "white";
 const tableHeaderColor = "orange";
@@ -28,7 +28,11 @@ const socialMediaLinks = [
     {
         site: "Personal Website/Blog",
         url: "https://ngravi.com"
-    }
+    },
+    {
+        site: "Github",
+        url: "https://github.com/cyberpirate92"
+    },
 ];
 
 // loading related..
@@ -71,7 +75,7 @@ var commands = [
         command: "social",
         description: "Show social media profiles",
         action: cmdSocial
-    },
+    }
 ];
 
 // global event listeners
@@ -135,7 +139,7 @@ function cmdProjects(args) {
         ajaxRequest.send();
     }
     else {
-        showRepos(repos);
+        showRepos(repos, true);
     }
 }
 
@@ -148,8 +152,9 @@ function cmdHistory(args) {
 }
 
 function cmdAbout(args) {
-    addTextLines(`This webapp is my attempt at a different kind of developer portfolio.\n
-    The project details are obtained from Github public API and is developed in vanilla Javascript.\n`, infoColor);
+    addTextLines(`\nThis project is my attempt at a different kind of developer portfolio.\n
+    The repository details are obtained from the Github public API and is written in vanilla Javascript.\n
+    Project source can be found at <a class="highlight" href="https://github.com/cyberpirate92/cyberpirate92.github.io">https://github.com/cyberpirate92/cyberpirate92.github.io</a>.`, infoColor);
 }
 
 function cmdSocial(args) {
@@ -181,18 +186,40 @@ function stopLoading() {
     isLoading = !isLoading;
 }
 
-function showRepos(repoList) {
-    repoList.sort((repoA, repoB) => {
+function showRepos(repoList, isCached = false) {
+    stopLoading();
+    let activeRepos = repoList.filter(r => r.fork === false && r.archived === false);
+    activeRepos.sort((repoA, repoB) => {
         let a =  (repoA && repoA.language && repoA.language.toLowerCase()) || "";
         let b = (repoB && repoB.language && repoB.language.toLowerCase()) || "";
         if (a > b) return 1;
         if (a < b) return -1;
         return 0;
     });
-    stopLoading();
-    let activeRepos = repoList.filter(r => r.archived === false);
-    createTitle("List of all projects, click to open")
-    createTable(activeRepos, ['name', 'language', 'description'], 'html_url');
+    if (!isCached) {
+        activeRepos.map(repo => {
+            repo.name = `<a href="${repo.html_url}" class="clickable" target="_blank">${repo.name}</a>`
+            let badges = "";
+            if (repo.stargazers_count > 0) {
+                badges += `${repo.stargazers_count}<i class="fa fa-star"></i>`;
+            }
+            if (repo.forks > 0) {
+                badges += `${badges.length > 1 ? ' ' : ''}${repo.forks}<i class="fa fa-code-fork"></i>`;
+            }
+            if (badges.length > 0) {
+                repo.name += ` <span class="badge">${badges}</span>`;
+            }
+            if (repo.description == "") {
+                repo.description = `<i class="muted">No description provided</i>`;
+            }
+            if (repo.homepage) {
+                repo.description += ` <a class="demoLink u" target="_blank" href=${repo.homepage}>demo<i class="fa fa-bolt"></i></a>`;
+            }
+            return repo;
+        });
+    }
+    createTitle("List of all my github repositories excluding forks, click to open")
+    createTable(activeRepos, ['name', 'language', 'description']);
     createLanguageTable(activeRepos)
     let currentLine = getCurrentLine();
     if (!currentLine) {
@@ -202,7 +229,8 @@ function showRepos(repoList) {
 
 function createTitle(text) {
     let title = document.createElement('div');
-    title.textContent = text;
+    title.classList.add('resultTitle')
+    title.innerHTML = text;
     container.appendChild(title)
 }
 
@@ -230,12 +258,12 @@ function createLanguageTable(objArray) {
             })
         });
         language_map.sort((a, b) => a.projects - b.projects);
-        createTitle(`Language wise project stats (Total: ${totalProjects})`)
+        createTitle(`Language wise project stats (<span class="info u">Total: ${totalProjects}</span>)`)
         createTable(language_map, ['language', 'projects', 'percentage']);
     }
 }
 
-function createTable(objArray, columns, linkProperty) {
+function createTable(objArray, columns) {
     if (!objArray || !columns || objArray.length <= 0 || columns.length <= 0) return;
     
     let table = document.createElement("table");
@@ -246,14 +274,7 @@ function createTable(objArray, columns, linkProperty) {
     objArray.forEach(obj => {
         let data = [];
         columns.forEach(c => data.push(obj[c]));
-        let row = getTableRow(data, false, infoColor);
-        if (linkProperty && linkProperty.length > 0) {
-            row.className = "clickable";
-            row.addEventListener("click", () => {
-                window.open(obj[linkProperty], '_blank');
-            });
-        }
-        tableBody.appendChild(row);
+        tableBody.appendChild(getTableRow(data, false, infoColor));
     });
     
     table.appendChild(tableHead);
@@ -272,14 +293,16 @@ function getTableRow(data, isHeading, optionalTextColor, optionalBackgroundColor
             col.appendChild(getLink(data[i], data[i]));
         }
         else {
-            col.textContent = data[i];
+            if (isHeading) {
+                col.textContent = data[i];
+            } else {
+                col.innerHTML = data[i];
+            }
         }
         if (optionalTextColor)
         col.style.color = optionalTextColor;
         if (optionalBackgroundColor)
         col.style.backgroundColor = optionalBackgroundColor;
-        // if (isNumericValue)
-        //     col.style.textAlign = 'center'
         row.appendChild(col);
     }
     return row;
@@ -292,8 +315,12 @@ function getLink(linkHref, linkText) {
     return anchor;
 }
 
-function createLine(root) {
+function createLine(root, skipLineBreak = false) {
     if(!root) return;
+    if (!skipLineBreak) {
+        let linebreak = document.createElement("br");
+        root.appendChild(linebreak)
+    }
     root.appendChild(getNewCommandLine());
     getCurrentLine().focus();
 }
@@ -339,7 +366,7 @@ function addTextLines(text, optionalTextColor) {
 
 function addTextLine(text, optionalTextColor) {
     let textNode = document.createElement("div");
-    textNode.textContent = text;
+    textNode.innerHTML = text;
     if (optionalTextColor)
     textNode.style.color = optionalTextColor;
     container.appendChild(textNode);
@@ -448,5 +475,5 @@ function getTextProgressBar(value) {
     for (let i=1; i<=100; i++) {
         progressBar += value >= i ? filledBar : emptyBar;
     }
-    return `${progressBar} ${value}% `;
+    return `<span class="progressbar">${progressBar}</span> ${value}% `;
 }

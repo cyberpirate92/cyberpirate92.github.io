@@ -31,6 +31,7 @@ div.commandLineInput {
     order: 2;
     flex-grow: 1;
     padding-left: 10px;
+    color: #fff;
 }
 div:focus {
     outline: none;
@@ -38,7 +39,7 @@ div:focus {
 table.centeredTable {
     margin-top: 10px;
     margin-bottom: 10px;
-    border: 2px solid lightgray;
+    /* border: 2px solid lightgray; */
     border-top: none;
     border-spacing: 0;
     border-collapse: collapse;
@@ -58,10 +59,6 @@ table.centeredTable > tbody > tr > td {
     padding-left: 5px;
     overflow: hidden;
 }
-table.centeredTable > tbody > tr.clickable {
-    transition: background-color 1s ease;
-    cursor: pointer;
-}
 table.centeredTable > tbody > tr.clickable:hover {
     background-color: #333;
 }
@@ -69,8 +66,18 @@ a {
     color: inherit;
     text-decoration: underline;
 }
+a:hover {
+    color: rgb(100%, 100%, 20%);
+}
+a.clickable {
+    transition: color 1s ease;
+    cursor: pointer;
+}
 span.info {
-    color: yellow;
+    color: rgb(100%, 100%, 20%);
+}
+div.resultTitle {
+    color: #fff;
 }
 .welcomeText {
     color: lightgray;
@@ -82,4 +89,32 @@ span.info {
     padding: 10px;
     background: #000;
     color: lightgray;
+}
+span.progressbar {
+    color: rgb(100%, 100%, 20%);
+}
+.u {
+    text-decoration: underline !important;
+}
+.muted {
+    color: gray;
+}
+a.demoLink {
+    color: rgb(100%, 100%, 20%);
+    text-decoration: none;
+}
+a.demoLink:hover {
+    text-decoration: underline;
+}
+.highlight {
+    color: rgb(100%, 100%, 20%);
+}
+span.badge {
+    background-color: rgb(234, 238, 137);
+    color: #101010;
+    font-size: 0.75rem;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 2px;
+    margin-left: 2px;
 }

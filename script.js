@@ -102,7 +102,7 @@ function cmdClear(args) {
 function cmdProjects(args) {
     if (!repos) {
         showLoading();
-        const githubApiUrl = `https://api.github.com/users/${username}/repos?per_page=100`;
+        const githubApiUrl = `https://api.github.com/users/${username}/repos?type=owner&per_page=100&page=1`;
         var ajaxRequest = new XMLHttpRequest();
         ajaxRequest.addEventListener("load", () => {
             if (ajaxRequest.status === 200) {
@@ -190,7 +190,7 @@ function showRepos(repoList) {
         return 0;
     });
     stopLoading();
-    let activeRepos = repoList.filter(r => r.fork === false && r.archived === false);
+    let activeRepos = repoList.filter(r => r.archived === false);
     createTitle("List of all projects, click to open")
     createTable(activeRepos, ['name', 'language', 'description'], 'html_url');
     createLanguageTable(activeRepos)

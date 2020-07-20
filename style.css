@@ -118,3 +118,45 @@ span.badge {
     border-radius: 2px;
     margin-left: 2px;
 }
+.welcome-greeting {
+    color: lightgray;
+    font-family: monospace;
+    animation-direction: alternate;
+    animation-name: blink;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@media only screen and (max-device-width: 575px) {
+    .welcome-greeting {
+        font-size: 5px;
+    }
+}
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+    .welcome-greeting {
+        font-size: 9px;
+    }
+}
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .welcome-greeting {
+        font-size: 12px;
+    }
+}
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .welcome-greeting {
+        font-size: 1rem;
+    }
+}
+
+@keyframes blink {
+    from {   
+        opacity: 0.5;
+    }
+    to {
+        opacity: 1;
+    }
+}

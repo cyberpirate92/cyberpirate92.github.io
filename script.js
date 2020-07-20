@@ -11,29 +11,48 @@ const username = "cyberpirate92";
 const socialMediaLinks = [
     {
         site: "LinkedIn",
-        url: "https://linkedin.com/in/theja-bsr"
+        url: "https://linkedin.com/in/theja-bsr",
     },
     {
         site: "Twitter",
-        url: "https://twitter.com/invictus_42"
+        url: "https://twitter.com/decodify",
     },
     {
         site: "StackOverflow",
-        url: "https://stackoverflow.com/users/2526437/cyberpirate92"
+        url: "https://stackoverflow.com/users/story/2526437",
     },
     {
         site: "Hackerrank",
-        url: "https://www.hackerrank.com/cyberpirate92"
+        url: "https://www.hackerrank.com/cyberpirate92",
     },
     {
         site: "Personal Website/Blog",
-        url: "https://ngravi.com"
+        url: "https://ravitheja.dev/blog",
     },
     {
         site: "Github",
-        url: "https://github.com/cyberpirate92"
+        url: "https://github.com/cyberpirate92",
     },
 ];
+
+
+const WelcomeAscii = [
+    "▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+    "▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+    "▓▓▓▓▓'`▓▓▓▓▓▓▓▓▓▓▓▓▓'`▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+    "▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+    "▓▓▓▓▓▓▓  '▓/ `/ `▓' .▓▓▓▓▓▓  ▓▓▓   ▓▓▓  ▓       ▓  ▓▓▓▓▓▓▓      ▓▓      ▓▓    ▓▓    ▓       ▓▓▓",
+    "▓▓▓▓▓▓▓▓. i  i  /! .▓▓▓▓▓▓▓  ▓▓▓   ▓▓▓  ▓   ▓▓▓▓▓  ▓▓▓▓▓▓   ▓▓  ▓   ▓▓   ▓          ▓   ▓▓▓▓▓▓▓",
+    "▓▓▓▓▓▓▓▓▓.--'--'   ▓▓▓▓▓▓▓▓  ▓▓▓   ▓▓▓  ▓       ▓  ▓▓▓▓▓▓  ▓▓▓▓▓▓  ▓▓▓▓  ▓  ▓▓  ▓▓  ▓       ▓▓▓",
+    "▓▓^^▓▓▓▓▓'        J▓▓▓▓▓▓▓▓  ▓▓▓   ▓▓▓  ▓       ▓  ▓▓▓▓▓▓  ▓▓▓▓▓▓  ▓▓▓▓  ▓  ▓▓  ▓▓  ▓       ▓▓▓",
+    "▓▓▓   ~\"\"   `.   .▓▓▓▓▓▓▓▓▓   ▓     ▓   ▓   ▓▓▓▓▓  ▓▓▓▓▓▓   ▓▓  ▓   ▓▓   ▓  ▓▓  ▓▓  ▓   ▓▓▓▓▓▓▓",
+    "▓▓▓▓▓e,      ;  .▓▓▓▓▓▓▓▓▓▓▓     ▓     ▓▓       ▓       ▓▓      ▓▓      ▓▓  ▓▓  ▓▓  ▓       ▓▓▓",
+    "▓▓▓▓▓▓▓▓▓▓▓.'   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+    "▓▓▓▓▓▓▓▓▓▓▓▓.    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓",
+    "▓▓▓▓▓▓▓▓▓▓▓▓▓     ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
+].join('\n');
+
+
 
 // loading related..
 var isLoading = false;
@@ -88,6 +107,7 @@ window.addEventListener('click', (event) => {
 window.addEventListener('load', () => {
     container = document.querySelector("#container");
     refreshApiRateCount();
+    addPreformattedText(WelcomeAscii, 'welcome-greeting');
     createLine(container); 
 });
 
@@ -370,6 +390,15 @@ function addTextLine(text, optionalTextColor) {
     if (optionalTextColor)
     textNode.style.color = optionalTextColor;
     container.appendChild(textNode);
+}
+
+function addPreformattedText(text, ...classNames) {
+    let preNode = document.createElement('pre');
+    preNode.innerHTML = text;
+    if (classNames.length > 0) {
+        preNode.classList.add(...classNames);
+    }
+    container.appendChild(preNode);
 }
 
 function getCurrentLine() {

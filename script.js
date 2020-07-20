@@ -438,6 +438,9 @@ function getNewCommandLine() {
     span.textContent = "$>"
     span.className = "shellPrefix";
     commandInput.contentEditable = true;
+    commandInput.spellcheck = false;
+    commandInput.autocapitalize = false;
+    commandInput.autocomplete = "off";
     commandInput.className = "commandLineInput";
     commandInput.id = "currentLine";
     preDiv.className = "commandLine";
@@ -481,7 +484,7 @@ function getNewCommandLine() {
 }
 
 function updateApiRateInfo(request) {
-    console.log(request.getAllResponseHeaders());
+    // console.log(request.getAllResponseHeaders());
     let resetDate = (new Date(request.getResponseHeader("X-RateLimit-Reset") * 1000) || new Date());
     document.querySelector("#remainingRequests").textContent = request.getResponseHeader("X-RateLimit-Remaining") || 60;
     document.querySelector("#resetTime").textContent = `${padString(2, '0', resetDate.getHours())}:${padString(2, '0', resetDate.getMinutes())}`;

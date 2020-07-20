@@ -119,13 +119,8 @@ span.badge {
     margin-left: 2px;
 }
 .welcome-greeting {
-    color: lightgray;
+    color: rgb(100%, 100%, 20%);
     font-family: monospace;
-    animation-direction: alternate;
-    animation-name: blink;
-    animation-duration: 5s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
 }
 
 @media only screen and (max-device-width: 575px) {
@@ -149,14 +144,5 @@ span.badge {
 @media (min-width: 992px) {
     .welcome-greeting {
         font-size: 1rem;
-    }
-}
-
-@keyframes blink {
-    from {   
-        opacity: 0.5;
-    }
-    to {
-        opacity: 1;
     }
 }

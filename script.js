@@ -484,7 +484,22 @@ function updateApiRateInfo(request) {
     console.log(request.getAllResponseHeaders());
     let resetDate = (new Date(request.getResponseHeader("X-RateLimit-Reset") * 1000) || new Date());
     document.querySelector("#remainingRequests").textContent = request.getResponseHeader("X-RateLimit-Remaining") || 60;
-    document.querySelector("#resetTime").textContent = `${resetDate.getHours()}:${resetDate.getMinutes()}`;
+    document.querySelector("#resetTime").textContent = `${padString(2, '0', resetDate.getHours())}:${padString(2, '0', resetDate.getMinutes())}`;
+}
+
+/**
+ * Pad string
+ * @param {Number} threshold 
+ * @param {String} padCharacter 
+ * @param {Number} stringToPad 
+ */
+function padString(threshold, padCharacter, stringToPad) {
+    stringToPad = stringToPad + '';
+    padCharacter = padCharacter + '';
+    if (threshold && stringToPad.length < threshold) {
+        stringToPad = (new Array(threshold - stringToPad.length)).fill(padCharacter).join('') + stringToPad;
+    }
+    return stringToPad;
 }
 
 function refreshApiRateCount() {

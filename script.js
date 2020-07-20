@@ -332,6 +332,7 @@ function getLink(linkHref, linkText) {
     var anchor = document.createElement("a");
     anchor.href = linkHref;
     anchor.textContent = linkText;
+    anchor.setAttribute('target', '_blank');
     return anchor;
 }
 

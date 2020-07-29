@@ -15,7 +15,7 @@ const socialMediaLinks = [
     },
     {
         site: "Twitter",
-        url: "https://twitter.com/decodify",
+        url: "https://twitter.com/invictus_42",
     },
     {
         site: "StackOverflow",

@@ -19,7 +19,7 @@ const socialMediaLinks = [
     },
     {
         site: "StackOverflow",
-        url: "https://stackoverflow.com/users/story/2526437",
+        url: "https://stackoverflow.com/users/2526437/cyberpirate92?tab=profile",
     },
     {
         site: "Hackerrank",
